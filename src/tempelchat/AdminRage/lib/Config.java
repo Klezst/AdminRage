@@ -21,8 +21,7 @@ public class Config
 	public Config (AdminRage plugin)
 	{
 		this.plugin = plugin;
-		this.file = new File("plugins/"+plugin.pluginName+"/"+plugin.pluginName+".properties");
-		
+		this.file = new File("plugins" + File.separator + plugin.pluginName + File.separator + plugin.pluginName + ".properties");
 		
 		defaultProperties = new Properties();
 		setDefaultProperties();

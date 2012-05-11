@@ -1,6 +1,7 @@
+authors: [TempelChat, Klezst]
 name: AdminRage
 main: tempelchat.AdminRage.AdminRage
-version: 1.7
+version: 1.8
 commands:
     adminrage:
         description: Something really bad happens, if you offend an admin!

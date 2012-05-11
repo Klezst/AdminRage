@@ -11,15 +11,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
-import com.nijikokun.bukkit.Permissions.Permissions;
-import com.nijiko.permissions.PermissionHandler;
-import org.bukkit.plugin.Plugin;
+import com.gmail.klezst.bukkit.adminrage.bukkitutil.compatibility.Permission;
 
 import tempelchat.AdminRage.RagedAdmin.RageLevel;
 import tempelchat.AdminRage.lib.Config;
@@ -39,8 +35,6 @@ public class AdminRage extends JavaPlugin {
     
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     
-    public PermissionHandler Permissions = null;
-    
     public String pluginName; 
     
     private World world = null;
@@ -59,8 +53,7 @@ public class AdminRage extends JavaPlugin {
     	
         PluginManager pm = getServer().getPluginManager();
 
-        pm.registerEvent(Event.Type.PLAYER_QUIT, this.playerListener, Priority.Lowest, this);
-        pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Priority.Lowest, this);
+        pm.registerEvents(this.playerListener, this);
        
  
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
@@ -68,8 +61,6 @@ public class AdminRage extends JavaPlugin {
         pluginName=pluginDescription.getName();
         //message(pluginDescription.getName() + " version " + pluginDescription.getVersion() + " is enabled!" );
         message("version " + pluginDescription.getVersion() + " is enabled!" );
-        
-        setupPermissions();
         
 		Config conf = new Config(this);
         properties = conf.getUserProperties();
@@ -179,7 +170,7 @@ public class AdminRage extends JavaPlugin {
     	}*/
     	Player p = (Player)sender;
     	
-    	if (   (Permissions!=null && !Permissions.has(p, "adminrage.general"))   ||   (Permissions==null && !p.isOp())   ) 
+    	if (!Permission.has(p, "adminrage.general")) 
     	{
     		p.sendMessage("You are not allowed to use "+pluginName+"!");
     		return true;
@@ -251,7 +242,7 @@ public class AdminRage extends JavaPlugin {
 				}
 				if(args[0].equalsIgnoreCase("override"))
 				{
-					if(Permissions.has(p, "adminrage.override"))
+					if(Permission.has(p, "adminrage.override"))
 					{
 						unrageAdmin();
 						p.sendMessage("Admin has been unraged!");
@@ -462,25 +453,6 @@ public class AdminRage extends JavaPlugin {
 
     public void setDebugging(final Player player, final boolean value) {
         debugees.put(player, value);
-    }
-    
-	private void setupPermissions() 
-    {
-    	Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
-
-
-    	if(Permissions == null) 
-    	{
-    	    if(test != null) 
-    	    {
-    	    	Permissions = ((Permissions)test).getHandler();
-    	    } 
-    	    else 
-    	    {
-	    		message("Permission system not enabled. UNRESTRICTED USE!");
-	    		//this.getServer().getPluginManager().disablePlugin(this);
-    	    }
-    	}
     }
 	
 	public void message (String s)

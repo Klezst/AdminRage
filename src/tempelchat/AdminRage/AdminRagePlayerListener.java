@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import tempelchat.AdminRage.RagedAdmin.RageLevel;
@@ -15,7 +15,7 @@ import tempelchat.AdminRage.RagedAdmin.RageLevel;
  * @author Tempelchat
  */
 
-public class AdminRagePlayerListener extends PlayerListener {
+public class AdminRagePlayerListener implements Listener {
 
 	private final AdminRage plugin;
 
@@ -23,7 +23,6 @@ public class AdminRagePlayerListener extends PlayerListener {
         plugin = instance;
     }
     
-    @Override
     public void onPlayerQuit(PlayerQuitEvent event)
     {
     	RagedAdmin ra = plugin.getRagedAdmin();
@@ -37,13 +36,12 @@ public class AdminRagePlayerListener extends PlayerListener {
 
     }
     
-    /*@Override
+    /*
     public void onPlayerDamage(PlayerDamageEvent event)
     {
     	TODO Any damage event? Make raged invincible.
     }*/
 
-    @Override
     public void onPlayerInteract(PlayerInteractEvent event)
     {
     	Player p = event.getPlayer();
